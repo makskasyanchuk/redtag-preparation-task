@@ -221,7 +221,6 @@ export default class BooksManagement extends LightningElement {
                     })
                 );
                 this.closeModal();
-                // this.clearForm();
             })
             .catch(error => {
                 this.dispatchEvent(
