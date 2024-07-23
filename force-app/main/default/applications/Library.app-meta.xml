@@ -6,7 +6,7 @@
         <content>Books</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>lightningcomponent</type>
+        <type>Flexipage</type>
         <pageOrSobjectType>Book__c</pageOrSobjectType>
     </actionOverrides>
     <actionOverrides>
@@ -15,7 +15,7 @@
         <content>Books</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>lightningcomponent</type>
+        <type>Flexipage</type>
         <pageOrSobjectType>Book__c</pageOrSobjectType>
     </actionOverrides>
     <actionOverrides>
