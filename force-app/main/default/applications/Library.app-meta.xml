@@ -9,8 +9,15 @@
         <type>Flexipage</type>
         <pageOrSobjectType>Book__c</pageOrSobjectType>
     </actionOverrides>
-    <comment>Action override created by Lightning App Builder during activation.</comment>
-    <pageOrSobjectType>Book__c</pageOrSobjectType>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Books</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Book__c</pageOrSobjectType>
+    </actionOverrides>
     <actionOverrides>
         <actionName>Tab</actionName>
         <content>Home_Page_Default</content>
