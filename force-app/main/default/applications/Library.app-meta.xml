@@ -44,5 +44,4 @@
     <tabs>Book__c</tabs>
     <tabs>Author__c</tabs>
     <uiType>Lightning</uiType>
-    <utilityBar>Library_UtilityBar</utilityBar>
 </CustomApplication>
