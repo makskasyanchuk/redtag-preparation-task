@@ -5,6 +5,7 @@
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png"></a>
 - Assign 'Book Library Permission Set' permission set to your User.
 - Open 'Library' App.
+- Assign 'Home' tab on the Library app, pressing 'pencil' icon on the right corner of tabs section
 - Open 'Home' Tab.
 - Use the app functionality.
 
