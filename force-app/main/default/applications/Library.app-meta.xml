@@ -3,6 +3,7 @@
     <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
+        <type>Flexipage</type>
         <pageOrSobjectType>Book__c</pageOrSobjectType>
     </actionOverrides>
     <actionOverrides>
