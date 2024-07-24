@@ -51,6 +51,6 @@
     <navType>Standard</navType>
     <tabs>Book__c</tabs>
     <tabs>Author__c</tabs>
-    <tabs>Home_Page_Default</tabs>
+    <tabs>Library_App_Manager</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>
