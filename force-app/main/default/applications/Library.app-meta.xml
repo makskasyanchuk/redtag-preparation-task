@@ -26,14 +26,6 @@
         <type>Flexipage</type>
         <pageOrSobjectType>standard-home</pageOrSobjectType>
     </actionOverrides>
-    <actionOverrides>
-        <actionName>Tab</actionName>
-        <content>Library_App_Manager</content>
-        <formFactor>Large</formFactor>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>Flexipage</type>
-        <pageOrSobjectType>Book__c</pageOrSobjectType>
-    </actionOverrides>
     <brand>
         <headerColor>#0070D2</headerColor>
         <logo>images</logo>
