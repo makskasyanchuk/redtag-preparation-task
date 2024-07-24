@@ -127,10 +127,6 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <type>Flexipage</type>
-    </actionOverrides>
-    <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
         <content>Book_Record_Page</content>
