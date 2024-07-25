@@ -79,21 +79,25 @@
                 <!-- Modal Footer -->
                 <div class="slds-modal__footer">
                     <template if:true={authorModalOpened}>
-                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal} style="padding-right: 4px;"></lightning-button>
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal}
+                            style="padding-right: 4px;"></lightning-button>
                         <lightning-button variant="brand" label="Delete"
                             onclick={handleAuthorDelete}></lightning-button>
                     </template>
                     <template if:true={addBookModalOpened}>
-                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal} style="padding-right: 4px;"></lightning-button>
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal}
+                            style="padding-right: 4px;"></lightning-button>
                         <lightning-button variant="brand" label="Save" onclick={saveBook}></lightning-button>
                     </template>
                     <template if:true={updateBookModalOpened}>
-                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal} style="padding-right: 4px;"></lightning-button>
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal}
+                            style="padding-right: 4px;"></lightning-button>
                         <lightning-button variant="brand" label="Update" onclick={saveBook}></lightning-button>
                     </template>
                 </div>
             </div>
         </section>
+        <div class="transition"></div>
         <div class="slds-backdrop slds-backdrop_open"></div>
         <div class="slds-fade-in-open"></div>
     </template>
@@ -106,27 +110,33 @@
 
             <!-- Delete Author Button -->
             <lightning-button label="Delete Author" onclick={openAuthorDeleteModal} variant="neutral"
-            icon-name="action:remove"></lightning-button>
+                icon-name="action:remove"></lightning-button>
 
             <template lwc:if={rowSelected}>
                 <!-- Update Button -->
-                <lightning-button label="Update" title="Update" onclick={openUpdateBookModal} class="slds-m-left_x-small"
-                    variant="brand" icon-name="action:update"></lightning-button>
+                <lightning-button label="Update" title="Update" onclick={openUpdateBookModal}
+                    class="slds-m-left_x-small" variant="brand" icon-name="action:update"></lightning-button>
                 <!-- Delete Button -->
                 <lightning-button label="Delete" title="Delete" onclick={deleteRow} class="slds-m-left_x-small"
                     variant="neutral" icon-name="action:remove"></lightning-button>
             </template>
         </div>
         <div style="height: 300px;">
-            <lightning-datatable key-field="id" columns={columns} data={filteredBooks} default-sort-direction={}
-                sorted-direction={} sorted-by={} onsort={onHandleSort} onrowselection={handleRowSelection}>
+            <lightning-datatable key-field="id" columns={columns} data={filteredBooks} onsort={onHandleSort}
+                onrowselection={handleRowSelection} max-row-selection="1">
             </lightning-datatable>
             <!-- Export Books Button -->
         </div>
         <br>
         <div style="background-color: white;">
-            <lightning-button label="Export Books" onclick={exportBooks} variant="brand"
-                style="padding: 5px;" icon-name="action:download"></lightning-button>
+            <lightning-button label="Export Books" onclick={exportBooks} variant="brand" style="padding: 5px;"
+                icon-name="action:download"></lightning-button>
         </div>
     </lightning-card>
+
+    <template if:true={isSaving}>
+        <div class="slds-spinner_container">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
 </template>

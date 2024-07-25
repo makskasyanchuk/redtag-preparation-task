@@ -21,6 +21,7 @@ export default class BooksManagement extends LightningElement {
     authorModalOpened = false;
     addBookModalOpened = false;
     updateBookModalOpened = false;
+    isSaving = false;
 
     bookId;
     title;
@@ -66,7 +67,6 @@ export default class BooksManagement extends LightningElement {
         this.isModalOpen = false;
     }
 
-
     // Handle input field values
     handleTitleChange(event) {
         this.title = event.target.value;
@@ -90,16 +90,15 @@ export default class BooksManagement extends LightningElement {
 
     // Handle row selection
     handleRowSelection(event) {
-        this.rowSelected = !this.rowSelected;
-
         const selectedRows = event.detail.selectedRows;
-        if (selectedRows.length > 0) {
+        
+        if (selectedRows.length === 1) {
+            this.rowSelected = true;
             this.selectedBookId = selectedRows[0].recordId; // Assuming single row selection
             this.title = selectedRows[0].name;
             this.description = selectedRows[0].description;
             this.authorName = selectedRows[0].authorName;
             this.authorId = selectedRows[0].authorId;
-            this.rowSelected = true;
         } else {
             this.rowSelected = false;
             this.clearForm();
@@ -235,6 +234,11 @@ export default class BooksManagement extends LightningElement {
             );
             return; // Exit the method if author is not selected
         }
+        
+        this.isSaving = true;
+        this.timeout();
+        this.closeModal();
+        
 
         upsertBook({ bookId: this.selectedBookId, name: this.title, description: this.description, authorId: this.authorId })
             .then(() => {
@@ -247,7 +251,7 @@ export default class BooksManagement extends LightningElement {
                         variant: 'success'
                     })
                 );
-                this.closeModal();
+                
             })
             .catch(error => {
                 this.dispatchEvent(
@@ -257,15 +261,19 @@ export default class BooksManagement extends LightningElement {
                         variant: 'error'
                     })
                 );
-            });
+            })
     }
 
 
     // Handle row deletion
     deleteRow() {
+        this.isSaving = true;
+        this.timeout();
+
         deleteBook({ bookId: this.selectedBookId })
             .then(() => {
                 refreshApex(this._wiredBooks);
+
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'Success',
@@ -287,6 +295,10 @@ export default class BooksManagement extends LightningElement {
 
     // Handle author deletion
     handleAuthorDelete() {
+        this.isSaving = true;
+        this.timeout();
+        this.closeModal();
+        
         deleteAuthorAndRelatedBooks({ authorId: this.authorId })
             .then(() => {
                 refreshApex(this._wiredAuthors);
@@ -298,7 +310,6 @@ export default class BooksManagement extends LightningElement {
                         variant: 'success'
                     })
                 );
-                this.closeModal();
             })
             .catch(error => {
                 this.dispatchEvent(
@@ -308,7 +319,6 @@ export default class BooksManagement extends LightningElement {
                         variant: 'error'
                     })
                 );
-                this.closeModal();
             });
     }
 
@@ -319,5 +329,11 @@ export default class BooksManagement extends LightningElement {
         this.description = '';
         this.authorName = '';
         this.authorId = null;
+    }
+
+    timeout() {
+        setTimeout(() => {
+            this.isSaving = false;
+        }, 1000);
     }
 }
