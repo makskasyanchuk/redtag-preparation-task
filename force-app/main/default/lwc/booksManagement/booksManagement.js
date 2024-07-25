@@ -19,7 +19,8 @@ export default class BooksManagement extends LightningElement {
     rowSelected = false;
     isModalOpen = false;
     authorModalOpened = false;
-    bookModalOpened = false;
+    addBookModalOpened = false;
+    updateBookModalOpened = false;
 
     bookId;
     title;
@@ -41,22 +42,30 @@ export default class BooksManagement extends LightningElement {
     columns = bookColumns;
 
     // Handle open modal logic
-    openModal() {
+    openBookModal() {
         this.isModalOpen = true;
-        this.bookModalOpened = true;
+        this.addBookModalOpened = true;
+        this.updateBookModalOpened = false;
+        this.authorModalOpened = false;
+    }
+    openAuthorDeleteModal() {
+        this.isModalOpen = true;
+        this.authorModalOpened = true;
+        this.addBookModalOpened = false;
+        this.updateBookModalOpened = false;
+    }
+    openUpdateBookModal() {
+        this.isModalOpen = true;
+        this.updateBookModalOpened = true;
+        this.addBookModalOpened = false;
+        this.authorModalOpened = false;
     }
 
     // Handle close modal logic
     closeModal() {
         this.isModalOpen = false;
-        this.authorModalOpened = false;
-        this.bookModalOpened = false;
     }
 
-    confirmAuthorDelete() {
-        this.authorModalOpened = true;
-        this.isModalOpen = true;
-    }
 
     // Handle input field values
     handleTitleChange(event) {
@@ -78,7 +87,7 @@ export default class BooksManagement extends LightningElement {
     handleFilterTitleChange(event) {
         this.titleFilter = event.target.value;
     }
-    
+
     // Handle row selection
     handleRowSelection(event) {
         this.rowSelected = !this.rowSelected;

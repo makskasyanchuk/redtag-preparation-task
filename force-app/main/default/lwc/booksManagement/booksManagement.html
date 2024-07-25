@@ -1,6 +1,6 @@
 <!-- sldsValidatorIgnore -->
 <template>
-    <lightning-card title="Book Filter">
+    <lightning-card title="Book Filter" icon-name="utility:filter_criteria">
         <div class="slds-grid slds-gutters">
             <div class="slds-col">
                 <lightning-input label="Author" value={authorFilter} onchange={handleFilterAuthorChange}
@@ -15,7 +15,7 @@
                 <lightning-button-group>
                     <!-- Apply Filters Button -->
                     <lightning-button label="Apply Filters" onclick={applyFilters} variant="brand"
-                        style="padding-top: 29px;"></lightning-button>
+                        style="padding-top: 29px;" icon-name="action:filter"></lightning-button>
                     <!-- Reset Filters Button -->
                     <lightning-button label="Reset Filters" onclick={resetFilters} variant="neutral"
                         style="padding-top: 29px;"></lightning-button>
@@ -37,13 +37,17 @@
                 </button>
                 <!-- Modal Header -->
                 <div class="slds-modal__header">
+                    <template if:true={addBookModalOpened}>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium">New Book</h2>
+                        <p class="slds-m-top_x-small">Add the book you like.</p>
+                    </template>
+                    <template if:true={updateBookModalOpened}>
+                        <h2 id="modal-heading-03" class="slds-text-heading_medium">Update Book</h2>
+                        <p class="slds-m-top_x-small">Update the chosen book.</p>
+                    </template>
                     <template if:true={authorModalOpened}>
                         <h2 id="modal-heading-02" class="slds-text-heading_medium">Delete Author</h2>
                         <p class="slds-m-top_x-small">Choose author to delete.</p>
-                    </template>
-                    <template if:true={bookModalOpened}>
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium">New Book</h2>
-                        <p class="slds-m-top_x-small">Add the book you like.</p>
                     </template>
                 </div>
                 <!-- Modal Content -->
@@ -53,10 +57,19 @@
                             options={authorOptions} onchange={handleAuthorChange}>
                         </lightning-combobox>
                     </template>
-                    <template if:true={bookModalOpened}>
+                    <template if:true={addBookModalOpened}>
                         <lightning-input label="Title" value={title} onchange={handleTitleChange} data-id="title"
                             placeholder="Type here..."></lightning-input>
                         <lightning-combobox name="author" label="Author" placeholder="Select Author.."
+                            options={authorOptions} onchange={handleAuthorChange}>
+                        </lightning-combobox>
+                        <lightning-input label="Description" value={description} onchange={handleDescriptionChange}
+                            data-id="description" placeholder="Type here..."></lightning-input>
+                    </template>
+                    <template if:true={updateBookModalOpened}>
+                        <lightning-input label="Title" value={title} onchange={handleTitleChange} data-id="title"
+                            placeholder="Type here..."></lightning-input>
+                        <lightning-combobox name="author" label="Author" placeholder="Change Author.."
                             options={authorOptions} onchange={handleAuthorChange}>
                         </lightning-combobox>
                         <lightning-input label="Description" value={description} onchange={handleDescriptionChange}
@@ -70,9 +83,13 @@
                         <lightning-button variant="brand" label="Delete"
                             onclick={handleAuthorDelete}></lightning-button>
                     </template>
-                    <template if:true={bookModalOpened}>
+                    <template if:true={addBookModalOpened}>
                         <lightning-button variant="neutral" label="Cancel" onclick={closeModal} style="padding-right: 4px;"></lightning-button>
                         <lightning-button variant="brand" label="Save" onclick={saveBook}></lightning-button>
+                    </template>
+                    <template if:true={updateBookModalOpened}>
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal} style="padding-right: 4px;"></lightning-button>
+                        <lightning-button variant="brand" label="Update" onclick={saveBook}></lightning-button>
                     </template>
                 </div>
             </div>
@@ -81,23 +98,23 @@
         <div class="slds-fade-in-open"></div>
     </template>
 
-    <lightning-card title="Books">
+    <lightning-card title="Books" icon-name="utility:table">
         <div slot="actions">
-
             <!-- Add Book Button -->
-            <lightning-button label="Add book" title="Add book" onclick={openModal} variant="brand"
-                style="padding-right: 5px;"></lightning-button>
+            <lightning-button label="Add book" title="Add book" onclick={openBookModal} variant="brand"
+                style="padding-right: 5px;" icon-name="action:new"></lightning-button>
 
             <!-- Delete Author Button -->
-            <lightning-button label="Delete Author" onclick={confirmAuthorDelete} variant="neutral"></lightning-button>
+            <lightning-button label="Delete Author" onclick={openAuthorDeleteModal} variant="neutral"
+            icon-name="action:remove"></lightning-button>
 
             <template lwc:if={rowSelected}>
                 <!-- Update Button -->
-                <lightning-button label="Update" title="Update" onclick={openModal} class="slds-m-left_x-small"
-                    variant="brand"></lightning-button>
+                <lightning-button label="Update" title="Update" onclick={openUpdateBookModal} class="slds-m-left_x-small"
+                    variant="brand" icon-name="action:update"></lightning-button>
                 <!-- Delete Button -->
                 <lightning-button label="Delete" title="Delete" onclick={deleteRow} class="slds-m-left_x-small"
-                    variant="neutral"></lightning-button>
+                    variant="neutral" icon-name="action:remove"></lightning-button>
             </template>
         </div>
         <div style="height: 300px;">
@@ -109,7 +126,7 @@
         <br>
         <div style="background-color: white;">
             <lightning-button label="Export Books" onclick={exportBooks} variant="brand"
-                style="padding: 5px;"></lightning-button>
+                style="padding: 5px;" icon-name="action:download"></lightning-button>
         </div>
     </lightning-card>
 </template>
