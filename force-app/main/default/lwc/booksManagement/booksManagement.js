@@ -1,7 +1,6 @@
 import { LightningElement, api, track, wire } from 'lwc';
-// import { NavigationMixin } from 'lightning/navigation';
 import getBooks from '@salesforce/apex/BookManagementController.getAllBooks';
-import insertBook from '@salesforce/apex/BookManagementController.upsertBook';
+import upsertBook from '@salesforce/apex/BookManagementController.upsertBook';
 import deleteBook from '@salesforce/apex/BookManagementController.deleteBook';
 import fetchAuthors from '@salesforce/apex/BookManagementController.getAllAuthors';
 import deleteAuthorAndRelatedBooks from '@salesforce/apex/BookManagementController.deleteAuthorAndRelatedBooks';
@@ -17,27 +16,27 @@ const bookColumns = [
 export default class BooksManagement extends LightningElement {
     @api recordId;
 
-    @track rowSelected = false;
-    @track isModalOpen = false;
-    @track authorModalOpened = false;
-    @track bookModalOpened = false;
+    rowSelected = false;
+    isModalOpen = false;
+    authorModalOpened = false;
+    bookModalOpened = false;
 
-    @track bookId;
-    @track title;
-    @track authorId;
-    @track description;
-    @track authorName;
+    bookId;
+    title;
+    authorId;
+    description;
+    authorName;
 
-    @track authorFilter = '';
-    @track titleFilter = '';
     @track filteredBooks = [];
     @track books = [];
-
+    @track _wiredBooks = [];
+    @track _wiredAuthors = [];
+    @track authorOptions = [];
+    
+    authorFilter = '';
+    titleFilter = '';
     error;
-    _wiredBooks;
-    _wiredAuthors;
     selectedBookId;
-    authorOptions;
     
     columns = bookColumns;
 
@@ -69,11 +68,39 @@ export default class BooksManagement extends LightningElement {
     handleDescriptionChange(event) {
         this.description = event.target.value;
     }
+    
+    // Handle author filter change
+    handleFilterAuthorChange(event) {
+        this.authorFilter = event.target.value;
+    }
+    
+    // Handle title filter change
+    handleFilterTitleChange(event) {
+        this.titleFilter = event.target.value;
+    }
+    
+    // Handle row selection
+    handleRowSelection(event) {
+        this.rowSelected = !this.rowSelected;
+
+        const selectedRows = event.detail.selectedRows;
+        if (selectedRows.length > 0) {
+            this.selectedBookId = selectedRows[0].recordId; // Assuming single row selection
+            this.title = selectedRows[0].name;
+            this.description = selectedRows[0].description;
+            this.authorName = selectedRows[0].authorName;
+            this.authorId = selectedRows[0].authorId;
+            this.rowSelected = true;
+        } else {
+            this.rowSelected = false;
+            this.clearForm();
+        }
+    }
 
     // Fetch books 
     @wire(getBooks)
     fetchData(value) {
-        console.log(JSON.stringify(value));
+        // console.log(JSON.stringify(value));
         this._wiredBooks = value;
         const { data, error } = value;
 
@@ -89,7 +116,7 @@ export default class BooksManagement extends LightningElement {
     @wire(fetchAuthors)
     wiredAuthors(result) {
         this._wiredAuthors = result;
-        console.log('Text', JSON.stringify(result));
+        // console.log('Text', JSON.stringify(result));
         let tmpOptions = [];
         if (result.data) {
             result.data.forEach(author => {
@@ -131,15 +158,6 @@ export default class BooksManagement extends LightningElement {
         this.filteredBooks = this.books; // Reset filtered books to the original list
     }
 
-    // Handle author filter change
-    handleFilterAuthorChange(event) {
-        this.authorFilter = event.target.value;
-    }
-
-    // Handle title filter change
-    handleFilterTitleChange(event) {
-        this.titleFilter = event.target.value;
-    }
 
     // Logic to export books
     exportBooks() {
@@ -209,7 +227,7 @@ export default class BooksManagement extends LightningElement {
             return; // Exit the method if author is not selected
         }
 
-        insertBook({ bookId: this.selectedBookId, name: this.title, description: this.description, authorId: this.authorId })
+        upsertBook({ bookId: this.selectedBookId, name: this.title, description: this.description, authorId: this.authorId })
             .then(() => {
                 refreshApex(this._wiredBooks);
 
@@ -233,23 +251,6 @@ export default class BooksManagement extends LightningElement {
             });
     }
 
-    // Handle row selection
-    handleRowSelection(event) {
-        this.rowSelected = !this.rowSelected;
-
-        const selectedRows = event.detail.selectedRows;
-        if (selectedRows.length > 0) {
-            this.selectedBookId = selectedRows[0].recordId; // Assuming single row selection
-            this.title = selectedRows[0].name;
-            this.description = selectedRows[0].description;
-            this.authorName = selectedRows[0].authorName;
-            this.authorId = selectedRows[0].authorId;
-            this.rowSelected = true;
-        } else {
-            this.rowSelected = false;
-            this.clearForm();
-        }
-    }
 
     // Handle row deletion
     deleteRow() {
