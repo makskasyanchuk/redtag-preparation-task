@@ -169,7 +169,7 @@ export default class BooksManagement extends LightningElement {
 
     // Logic to export books
     exportBooks() {
-        if (this.filteredBooks.length === 0) {
+        if (this.books.length === 0) {
             // No books to export
             return;
         }
@@ -190,7 +190,7 @@ export default class BooksManagement extends LightningElement {
         csvData.push(['Title', 'Author', 'Description']);
 
         // Data rows
-        this.filteredBooks.forEach(book => {
+        this.books.forEach(book => {
             csvData.push([book.name, book.authorName || '', book.description || '']);
         });
 
