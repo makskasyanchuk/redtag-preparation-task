@@ -9,7 +9,9 @@ import { refreshApex } from "@salesforce/apex";
 
 const bookColumns = [
     { label: 'Title', fieldName: 'name', type: 'text' },
-    { label: 'Author', fieldName: 'authorName', type: 'text' },
+    { 
+        label: 'Author', fieldName: 'authorName', type: 'text'
+    },
     { label: 'Description', fieldName: 'description', type: 'text' },
 ];
 
@@ -240,7 +242,13 @@ export default class BooksManagement extends LightningElement {
         this.closeModal();
         
 
-        upsertBook({ bookId: this.selectedBookId, name: this.title, description: this.description, authorId: this.authorId })
+        upsertBook(
+            { 
+              bookId: this.selectedBookId,
+              name: this.title, description: this.description,
+              authorId: this.authorId 
+            }
+        )
             .then(() => {
                 refreshApex(this._wiredBooks);
 
