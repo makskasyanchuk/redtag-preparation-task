@@ -18,7 +18,10 @@ public with sharing class BookManagementController {
 
     @AuraEnabled(cacheable=true)
     public static List<BookWrapper> getAllBooks() {
-        List<Book__c> books = [SELECT Id, Name, Author__c, Author__r.Name, Description__c FROM Book__c ORDER BY Name];
+        List<Book__c> books = [
+            SELECT Id, Name, Author__c, Author__r.Name, Description__c, CreatedDate
+            FROM Book__c WHERE Author__c != null ORDER BY Name LIMIT 50
+        ];
         List<BookWrapper> wrappers = new List<BookWrapper>();
         for (Book__c book : books) {
             BookWrapper wrapper = new BookWrapper();
@@ -35,7 +38,7 @@ public with sharing class BookManagementController {
 
     @AuraEnabled(cacheable=true)
     public static List<Author__c> getAllAuthors() {
-        return [SELECT Id, Name FROM Author__c ORDER BY Name];
+        return [SELECT Id, Name FROM Author__c ORDER BY Name LIMIT 50];
     }
 
     @AuraEnabled
